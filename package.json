@@ -8,11 +8,16 @@
   },
   "bugs": "https://github.com/apostopher/themegen-cli/issues",
   "dependencies": {
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
     "@oclif/command": "1.5.19",
     "@oclif/config": "1.14.0",
     "@oclif/plugin-help": "2.2.3",
+    "commitizen": "4.0.3",
     "cosmiconfig": "6.0.0",
     "debug": "4.1.1",
+    "husky": "4.2.3",
+    "lint-staged": "10.0.7",
     "lodash": "4.17.15",
     "tslib": "1.10.0"
   },
@@ -24,6 +29,7 @@
     "@types/node": "13.7.4",
     "@typescript-eslint/eslint-plugin": "2.20.0",
     "chai": "4.2.0",
+    "cz-conventional-changelog": "3.1.0",
     "eslint": "6.8.0",
     "eslint-config-oclif": "3.1.0",
     "eslint-config-oclif-typescript": "0.1.0",
@@ -43,6 +49,11 @@
     "/lib"
   ],
   "homepage": "https://github.com/apostopher/themegen-cli",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "keywords": [
     "themegen"
   ],
@@ -53,12 +64,17 @@
   },
   "repository": "apostopher/themegen-cli",
   "scripts": {
+    "commit": "npx git-cz",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "mocha",
     "version": "oclif-dev readme && git add README.md"
   },
-  "themegen": {
-  },
-  "types": "lib/index.d.ts"
+  "themegen": {},
+  "types": "lib/index.d.ts",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
