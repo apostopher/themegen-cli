@@ -11,10 +11,14 @@
     "@oclif/command": "1.5.19",
     "@oclif/config": "1.14.0",
     "@oclif/plugin-help": "2.2.3",
+    "cosmiconfig": "6.0.0",
+    "debug": "4.1.1",
     "tslib": "1.10.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.22.2",
+    "@oclif/test": "1.2.5",
+    "@types/debug": "4.1.5",
     "@types/node": "13.7.4",
     "@typescript-eslint/eslint-plugin": "2.20.0",
     "chai": "4.2.0",
@@ -24,6 +28,7 @@
     "eslint-config-prettier": "6.10.0",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-prettier": "3.1.2",
+    "mocha": "7.0.1",
     "prettier": "1.19.1",
     "ts-node": "8.6.2",
     "typescript": "3.7.5"
@@ -48,7 +53,7 @@
   "scripts": {
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-    "test": "jest",
+    "test": "mocha",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"

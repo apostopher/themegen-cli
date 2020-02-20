@@ -1,6 +1,8 @@
-import { Command, flags } from '@oclif/command'
+import { flags } from '@oclif/command'
 
-class ThemegenCli extends Command {
+import { Base } from './base'
+
+class ThemegenCli extends Base {
   static description = 'Generate theme based on scales and colors'
 
   static flags = {
