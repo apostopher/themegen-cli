@@ -1,4 +1,4 @@
-import { Scale } from '../types'
+import { Scale, GeneratorOptions } from '../types'
 
 function generateSpace(value: number | string, index: number) {
   const padding = {
@@ -22,18 +22,25 @@ function generateSpace(value: number | string, index: number) {
   return { ...padding, ...margin }
 }
 
-function generateSpaces(scale: Scale) {
+function generateSpaces(scale: Scale, options: GeneratorOptions) {
   const { name, values, base } = scale
-  const scaleValues = values.map(value => value * base)
-  const scaleStyles = scaleValues.map(generateSpace)
+  const { rem = false } = options
+  let scaleStyles: any = {}
+  if (rem) {
+    const scaleValues = values.map(value => `${value}rem`)
+    scaleStyles = scaleValues.map(generateSpace)
+  } else {
+    const scaleValues = values.map(value => value * base)
+    scaleStyles = scaleValues.map(generateSpace)
+  }
   return {
     name,
     spaces: Object.assign({}, ...scaleStyles),
   }
 }
 
-export function generateSpaceThemes(scales: Scale[]) {
-  const spaceThemeList = scales.map(generateSpaces)
+export function generateSpaceThemes(scales: Scale[], options: GeneratorOptions) {
+  const spaceThemeList = scales.map(scale => generateSpaces(scale, options))
   return spaceThemeList.reduce(
     (prev, { name, spaces }) => ({
       ...prev,

@@ -7,11 +7,11 @@ import { generateFlexboxStyles } from './flexbox'
 import { generateFontSizeThemes } from './font-sizes'
 import { generateSpaceThemes } from './spaces'
 
-export function generate({ colors, spaces, fontSizes, typescript }: Config) {
+export function generate({ colors, spaces, fontSizes, typescript = false, rem = false }: Config) {
   const flexboxStyles = generateFlexboxStyles()
   const colorThemes = colors ? generateColorThemes(colors) : null
-  const spaceThemes = spaces ? generateSpaceThemes(spaces) : null
-  const fsThemes = fontSizes ? generateFontSizeThemes(fontSizes) : null
+  const spaceThemes = spaces ? generateSpaceThemes(spaces, { rem }) : null
+  const fsThemes = fontSizes ? generateFontSizeThemes(fontSizes, { rem }) : null
 
   // Get Flexbox source code
   const flexboxCode = `export const flexbox = ${JSON.stringify(flexboxStyles, null, 2)}${typescript ? ' as const' : ''}`

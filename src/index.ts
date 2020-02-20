@@ -16,6 +16,10 @@ class ThemegenCli extends Base {
       description: 'Scaffold a typescript file.',
       default: false,
     }),
+    rem: flags.boolean({
+      description: 'use REM based units',
+      default: false,
+    }),
     extends: flags.string({
       description: 'preset name to extend from',
       options: ['default'],
@@ -43,7 +47,8 @@ class ThemegenCli extends Base {
       if (argsConfig) finalConfig = { ...finalConfig, ...argsConfig }
     }
     // STEP 3: Load flags
-    if (flags.typescript) finalConfig.typescript = flags.typescript
+    if (flags.typescript) finalConfig.typescript = true
+    if (flags.rem) finalConfig.rem = true
     if (flags.extends) {
       const presetConfig = loadPreset(flags.extends)
       finalConfig = { ...finalConfig, ...presetConfig }
