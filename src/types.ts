@@ -26,8 +26,5 @@ export interface Config extends Options {
 }
 
 export type Presets = {
-  default: Config
-  test: Config
+  [key: string]: Config
 }
-
-export type PresetNames = keyof Presets

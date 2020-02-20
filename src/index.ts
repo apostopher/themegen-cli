@@ -1,6 +1,8 @@
 import { flags } from '@oclif/command'
 
 import { Base } from './base'
+import { presets } from './presets'
+import { Config } from './types'
 
 class ThemegenCli extends Base {
   static description = 'Generate theme based on scales and colors'
@@ -15,8 +17,8 @@ class ThemegenCli extends Base {
     rem: flags.boolean({
       description: 'use rem based scale',
     }),
-    preset: flags.string({
-      description: 'preset name',
+    extends: flags.string({
+      description: 'preset name to extend from',
       options: ['default'],
     }),
   }
@@ -27,10 +29,22 @@ class ThemegenCli extends Base {
 
   async run() {
     const { args, flags } = this.parse(ThemegenCli)
-
-    this.log(`hello from ./src/index.ts`)
-    if (args.file && flags.typescript) {
-      this.log(`you input --typescript and --file: ${args.file}`)
+    // STEP 1: Load config from file
+    let finalConfig: Config = this.fileConfig ? { ...this.fileConfig } : {}
+    // STEP 2: Load config from args
+    if (args.config) {
+      const argsConfig = await this.loadFromFile(args.config)
+      if (argsConfig) finalConfig = { ...finalConfig, ...argsConfig }
+    }
+    // STEP 3: Load flags
+    if (flags.typescript) finalConfig.typescript = flags.typescript
+    if (flags.rem) finalConfig.rem = flags.rem
+    if (flags.extends) {
+      const hasConfig = Object.prototype.hasOwnProperty.call(presets, flags.extends)
+      if (hasConfig) {
+        const presetConfig = presets[flags.extends]
+        finalConfig = { ...finalConfig, ...presetConfig }
+      }
     }
   }
 }
