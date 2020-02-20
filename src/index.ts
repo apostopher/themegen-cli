@@ -2,7 +2,7 @@ import { flags } from '@oclif/command'
 
 import { Base } from './base'
 import { generate } from './generators'
-import { presets } from './presets'
+import { loadPreset } from './presets'
 import { Config } from './types'
 
 class ThemegenCli extends Base {
@@ -28,8 +28,15 @@ class ThemegenCli extends Base {
 
   async run() {
     const { args, flags } = this.parse(ThemegenCli)
+    let finalConfig: Config = {}
     // STEP 1: Load config from file
-    let finalConfig: Config = this.fileConfig ? { ...this.fileConfig } : {}
+    if (this.fileConfig) {
+      if (this.fileConfig.extends) {
+        const presetConfig = loadPreset(this.fileConfig.extends)
+        finalConfig = { ...finalConfig, ...presetConfig }
+      }
+      finalConfig = { ...finalConfig, ...this.fileConfig }
+    }
     // STEP 2: Load config from args
     if (args.config) {
       const argsConfig = await this.loadFromFile(args.config)
@@ -38,11 +45,11 @@ class ThemegenCli extends Base {
     // STEP 3: Load flags
     if (flags.typescript) finalConfig.typescript = flags.typescript
     if (flags.extends) {
-      const hasConfig = Object.prototype.hasOwnProperty.call(presets, flags.extends)
-      if (hasConfig) {
-        const presetConfig = presets[flags.extends]
-        finalConfig = { ...finalConfig, ...presetConfig }
-      }
+      const presetConfig = loadPreset(flags.extends)
+      finalConfig = { ...finalConfig, ...presetConfig }
+    }
+    if (Object.keys(finalConfig).length === 0) {
+      throw new Error('Theme config is not provided')
     }
     // Call generator
     generate(finalConfig)
