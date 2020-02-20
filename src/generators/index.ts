@@ -7,13 +7,24 @@ import { ThemeConfig } from '../types'
 import { generateColorsTheme } from './colors'
 import { generateFlexboxStyles } from './flexbox'
 import { generateFontSizesTheme } from './font-sizes'
+import { generateSizesTheme } from './sizes'
 import { generateSpacesTheme } from './spaces'
 
-export function generate({ name = 'theme', colors, spaces, fontSizes, typescript = false, rem = false }: ThemeConfig) {
+// eslint-disable-next-line complexity
+export function generate({
+  name = 'theme',
+  colors,
+  spaces,
+  fontSizes,
+  sizes,
+  typescript = false,
+  rem = false,
+}: ThemeConfig) {
   const flexboxStyles = generateFlexboxStyles()
-  const colorThemes = colors ? generateColorsTheme(colors) : null
-  const spaceThemes = spaces ? generateSpacesTheme(spaces, { rem }) : null
-  const fsThemes = fontSizes ? generateFontSizesTheme(fontSizes, { rem }) : null
+  const colorTheme = colors ? generateColorsTheme(colors) : null
+  const spaceTheme = spaces ? generateSpacesTheme(spaces, { rem }) : null
+  const fsTheme = fontSizes ? generateFontSizesTheme(fontSizes, { rem }) : null
+  const sizeTheme = generateSizesTheme(sizes, { rem })
 
   const codeBlocks: string[] = []
   const themeBlocks: string[] = []
@@ -25,8 +36,8 @@ export function generate({ name = 'theme', colors, spaces, fontSizes, typescript
 
   // Get colors source code
   let colorsCode
-  if (colorThemes) {
-    colorsCode = `export const themeColors = ${JSON.stringify(colorThemes, null, 2)}${typescript ? ' as const' : ''}`
+  if (colorTheme) {
+    colorsCode = `export const themeColors = ${JSON.stringify(colorTheme, null, 2)}${typescript ? ' as const' : ''}`
     if (typescript) colorsCode += `\nexport type ThemeColors = typeof themeColors`
     codeBlocks.push(colorsCode)
     themeBlocks.push('...themeColors')
@@ -34,8 +45,8 @@ export function generate({ name = 'theme', colors, spaces, fontSizes, typescript
 
   // get space source code
   let spacesCode
-  if (spaceThemes) {
-    spacesCode = `export const themeSpaces = ${JSON.stringify(spaceThemes, null, 2)}${typescript ? ' as const' : ''}`
+  if (spaceTheme) {
+    spacesCode = `export const themeSpaces = ${JSON.stringify(spaceTheme, null, 2)}${typescript ? ' as const' : ''}`
     if (typescript) spacesCode += `\nexport type ThemeSpaces = typeof themeSpaces`
     codeBlocks.push(spacesCode)
     themeBlocks.push('...themeSpaces')
@@ -43,12 +54,22 @@ export function generate({ name = 'theme', colors, spaces, fontSizes, typescript
 
   // get font size source code
   let fsCode
-  if (fsThemes) {
-    fsCode = `export const themeFontSizes = ${JSON.stringify(fsThemes, null, 2)}${typescript ? ' as const' : ''}`
+  if (fsTheme) {
+    fsCode = `export const themeFontSizes = ${JSON.stringify(fsTheme, null, 2)}${typescript ? ' as const' : ''}`
     if (typescript) fsCode += `\nexport type ThemeFontSizes = typeof themeFontSizes`
     codeBlocks.push(fsCode)
     themeBlocks.push('...themeFontSizes')
   }
+
+  // get font size source code
+  let sizeCode
+  if (sizeTheme) {
+    sizeCode = `export const themeSizes = ${JSON.stringify(sizeTheme, null, 2)}${typescript ? ' as const' : ''}`
+    if (typescript) sizeCode += `\nexport type ThemeSizes = typeof themeSizes`
+    codeBlocks.push(sizeCode)
+    themeBlocks.push('...themeSizes')
+  }
+
   const themeName = name === '' ? 'theme' : `${name}Theme`
   let themeBlock = `export const ${themeName} = {${themeBlocks.join(', ')}}${typescript ? ' as const' : ''}`
   if (typescript) themeBlock += `\nexport type ${upperFirst(themeName)} = typeof ${themeName}`

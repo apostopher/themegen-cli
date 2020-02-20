@@ -20,6 +20,7 @@ export interface ThemeConfig extends Options {
   colors?: KeyValue
   spaces?: Scale
   fontSizes?: Scale
+  sizes?: Scale
 }
 
 export interface Presets {
