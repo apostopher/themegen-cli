@@ -13,12 +13,14 @@
     "@oclif/plugin-help": "2.2.3",
     "cosmiconfig": "6.0.0",
     "debug": "4.1.1",
+    "lodash": "4.17.15",
     "tslib": "1.10.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.22.2",
     "@oclif/test": "1.2.5",
     "@types/debug": "4.1.5",
+    "@types/lodash": "4.14.149",
     "@types/node": "13.7.4",
     "@typescript-eslint/eslint-plugin": "2.20.0",
     "chai": "4.2.0",

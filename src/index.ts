@@ -1,9 +1,10 @@
 import { flags } from '@oclif/command'
+import camelCase from 'lodash/camelCase'
 
 import { Base } from './base'
 import { generate } from './generators'
 import { loadPreset } from './presets'
-import { Config } from './types'
+import { ThemeConfig } from './types'
 
 class ThemegenCli extends Base {
   static description = 'Generate theme based on scales and colors'
@@ -27,12 +28,13 @@ class ThemegenCli extends Base {
   }
 
   static args = [
+    { name: 'name', description: 'Name of the theme', default: 'theme' },
     { name: 'config', description: 'theme config file location. e.g ` themegen --config=./themeConfig.js`' },
   ]
 
   async run() {
     const { args, flags } = this.parse(ThemegenCli)
-    let finalConfig: Config = {}
+    let finalConfig: ThemeConfig = { name: args.name }
     // STEP 1: Load config from file
     if (this.fileConfig) {
       if (this.fileConfig.extends) {
@@ -51,13 +53,13 @@ class ThemegenCli extends Base {
     if (flags.rem) finalConfig.rem = true
     if (flags.extends) {
       const presetConfig = loadPreset(flags.extends)
-      finalConfig = { ...finalConfig, ...presetConfig }
+      if (presetConfig) finalConfig = { ...finalConfig, ...presetConfig }
     }
     if (Object.keys(finalConfig).length === 0) {
       throw new Error('Theme config is not provided')
     }
     // Call generator
-    generate(finalConfig)
+    generate({ ...finalConfig, name: camelCase(finalConfig.name) })
   }
 }
 
