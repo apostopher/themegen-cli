@@ -15,6 +15,7 @@ export const presets: Presets = {
     spaces: [{ name: 'test', base: 16, values: test }],
     fontSizes: [{ name: 'test', base: 16, values: test }],
     typescript: true,
+    rem: true,
   },
 }
 

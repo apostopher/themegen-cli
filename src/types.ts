@@ -13,7 +13,10 @@ export interface Scale {
   values: number[]
 }
 
-export interface Options {
+export interface GeneratorOptions {
+  rem?: boolean
+}
+export interface Options extends GeneratorOptions {
   extends?: string
   typescript?: boolean
 }
