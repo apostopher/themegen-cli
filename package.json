@@ -59,7 +59,6 @@
     "version": "oclif-dev readme && git add README.md"
   },
   "themegen": {
-    "extends": "test"
   },
   "types": "lib/index.d.ts"
 }

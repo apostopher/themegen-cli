@@ -49,11 +49,12 @@ export function generate({ name = 'theme', colors, spaces, fontSizes, typescript
     codeBlocks.push(fsCode)
     themeBlocks.push('...themeFontSizes')
   }
-  const themeName = `${name}Theme`
+  const themeName = name === '' ? 'theme' : `${name}Theme`
   let themeBlock = `export const ${themeName} = {${themeBlocks.join(', ')}}${typescript ? ' as const' : ''}`
   if (typescript) themeBlock += `\nexport type ${upperFirst(themeName)} = typeof ${themeName}`
   codeBlocks.push(themeBlock)
 
   const themesCode = codeBlocks.join('\n\n')
-  fs.writeFileSync(`${name}-theme.${typescript ? 'ts' : 'js'}`, themesCode, { encoding: 'utf8' })
+  const fileName = name === '' ? 'theme' : `${name}-theme`
+  fs.writeFileSync(`${fileName}.${typescript ? 'ts' : 'js'}`, themesCode, { encoding: 'utf8' })
 }
