@@ -17,3 +17,7 @@ export const figmaColors = {
   purple1: '#9B51E0',
   purple2: '#BB6BD9',
 }
+
+export const testColors = {
+  primary: '#2F80ED',
+}

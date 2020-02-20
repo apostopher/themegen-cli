@@ -1,7 +1,7 @@
-import { Presets } from '../types'
+import { Presets, Config } from '../types'
 
-import { figmaColors } from './colors'
-import { majorThird } from './scales'
+import { figmaColors, testColors } from './colors'
+import { majorThird, test } from './scales'
 
 export const presets: Presets = {
   default: {
@@ -9,6 +9,19 @@ export const presets: Presets = {
     spaces: [{ name: 'default', base: 16, values: majorThird }],
     fontSizes: [{ name: 'default', base: 16, values: majorThird }],
     typescript: true,
-    rem: true,
   },
+  test: {
+    colors: [{ name: 'test', colors: testColors }],
+    spaces: [{ name: 'test', base: 16, values: test }],
+    fontSizes: [{ name: 'test', base: 16, values: test }],
+    typescript: true,
+  },
+}
+
+export function loadPreset(name: string): Config {
+  const hasConfig = Object.prototype.hasOwnProperty.call(presets, name)
+  if (hasConfig) {
+    return presets[name]
+  }
+  return {}
 }

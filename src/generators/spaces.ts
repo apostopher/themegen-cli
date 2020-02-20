@@ -1,6 +1,6 @@
 import { Scale } from '../types'
 
-function generateSpace(value: number, index: number) {
+function generateSpace(value: number | string, index: number) {
   const padding = {
     [`pa${index}`]: { paddingLeft: value, paddingTop: value, paddingRight: value, paddingBottom: value },
     [`ph${index}`]: { paddingLeft: value, paddingRight: value },

@@ -1,6 +1,6 @@
 import { Scale } from '../types'
 
-function generateFontSize(value: number, index: number) {
+function generateFontSize(value: number | string, index: number) {
   return {
     [`f${index}`]: value,
     [`fs${index}`]: { fontSize: value },

@@ -1,15 +1,20 @@
 import * as fs from 'fs'
 
-import { Config, Options } from '../types'
+import { Config } from '../types'
 
 import { generateColorThemes } from './colors'
-import { generateFontSizeThemes } from './fontSizes'
+import { generateFlexboxStyles } from './flexbox'
+import { generateFontSizeThemes } from './font-sizes'
 import { generateSpaceThemes } from './spaces'
 
-export function generate({ colors, spaces, fontSizes }: Config, { typescript }: Options) {
+export function generate({ colors, spaces, fontSizes, typescript }: Config) {
+  const flexboxStyles = generateFlexboxStyles()
   const colorThemes = colors ? generateColorThemes(colors) : null
   const spaceThemes = spaces ? generateSpaceThemes(spaces) : null
   const fsThemes = fontSizes ? generateFontSizeThemes(fontSizes) : null
+
+  // Get Flexbox source code
+  const flexboxCode = `export const flexbox = ${JSON.stringify(flexboxStyles, null, 2)}${typescript ? ' as const' : ''}`
 
   // Get colors source code
   let colorsCode
@@ -32,6 +37,6 @@ export function generate({ colors, spaces, fontSizes }: Config, { typescript }: 
     if (typescript) fsCode += `\nexport type ThemeFontSizes = typeof themeFontSizes`
   }
 
-  const themesCode = [colorsCode, spacesCode, fsCode].filter(Boolean).join('\n\n')
+  const themesCode = [flexboxCode, colorsCode, spacesCode, fsCode].filter(Boolean).join('\n\n')
   fs.writeFileSync(`themes.${typescript ? 'ts' : 'js'}`, themesCode, { encoding: 'utf8' })
 }
