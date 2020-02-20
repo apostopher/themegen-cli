@@ -22,8 +22,8 @@ function generateSpace(value: number | string, index: number) {
   return { ...padding, ...margin }
 }
 
-function generateSpaces(scale: Scale, options: GeneratorOptions) {
-  const { name, values, base } = scale
+export function generateSpacesTheme(scale: Scale, options: GeneratorOptions) {
+  const { values, base } = scale
   const { rem = false } = options
   let scaleStyles: any = {}
   if (rem) {
@@ -33,19 +33,5 @@ function generateSpaces(scale: Scale, options: GeneratorOptions) {
     const scaleValues = values.map(value => value * base)
     scaleStyles = scaleValues.map(generateSpace)
   }
-  return {
-    name,
-    spaces: Object.assign({}, ...scaleStyles),
-  }
-}
-
-export function generateSpaceThemes(scales: Scale[], options: GeneratorOptions) {
-  const spaceThemeList = scales.map(scale => generateSpaces(scale, options))
-  return spaceThemeList.reduce(
-    (prev, { name, spaces }) => ({
-      ...prev,
-      [name]: spaces,
-    }),
-    {},
-  )
+  return Object.assign({}, ...scaleStyles)
 }

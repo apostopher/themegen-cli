@@ -7,8 +7,8 @@ function generateFontSize(value: number | string, index: number) {
   }
 }
 
-function generateFontSizes(scale: Scale, options: GeneratorOptions) {
-  const { name, values, base } = scale
+export function generateFontSizesTheme(scale: Scale, options: GeneratorOptions) {
+  const { values, base } = scale
   const { rem = false } = options
   let scaleStyles: any = {}
   if (rem) {
@@ -18,19 +18,5 @@ function generateFontSizes(scale: Scale, options: GeneratorOptions) {
     const scaleValues = values.map(value => value * base)
     scaleStyles = scaleValues.map(generateFontSize)
   }
-  return {
-    name,
-    fontSizes: Object.assign({}, ...scaleStyles),
-  }
-}
-
-export function generateFontSizeThemes(scales: Scale[], options: GeneratorOptions) {
-  const fsThemeList = scales.map(scale => generateFontSizes(scale, options))
-  return fsThemeList.reduce(
-    (prev, { name, fontSizes }) => ({
-      ...prev,
-      [name]: fontSizes,
-    }),
-    {},
-  )
+  return Object.assign({}, ...scaleStyles)
 }

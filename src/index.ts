@@ -1,9 +1,11 @@
 import { flags } from '@oclif/command'
+import camelCase from 'lodash/camelCase'
+import omit from 'lodash/omit'
 
 import { Base } from './base'
 import { generate } from './generators'
 import { loadPreset } from './presets'
-import { Config } from './types'
+import { ThemeConfig } from './types'
 
 class ThemegenCli extends Base {
   static description = 'Generate theme based on scales and colors'
@@ -27,37 +29,42 @@ class ThemegenCli extends Base {
   }
 
   static args = [
+    { name: 'name', description: 'Name of the theme', default: '' },
     { name: 'config', description: 'theme config file location. e.g ` themegen --config=./themeConfig.js`' },
   ]
 
+  mergeConfig(config: ThemeConfig): ThemeConfig {
+    let extendedConfig: ThemeConfig = {}
+    if (config.extends) {
+      const presetConfig = loadPreset(config.extends)
+      if (presetConfig) extendedConfig = this.mergeConfig(presetConfig)
+    }
+    return { ...extendedConfig, ...omit(config, 'extends') }
+  }
+
   async run() {
     const { args, flags } = this.parse(ThemegenCli)
-    let finalConfig: Config = {}
-    // STEP 1: Load config from file
-    if (this.fileConfig) {
-      if (this.fileConfig.extends) {
-        const presetConfig = loadPreset(this.fileConfig.extends)
-        finalConfig = { ...finalConfig, ...presetConfig }
-      }
-      finalConfig = { ...finalConfig, ...this.fileConfig }
-    }
-    // STEP 2: Load config from args
-    if (args.config) {
+    let finalConfig: ThemeConfig = { name: args.name }
+    // STEP 1: Load config from args
+    if (flags.extends) {
+      const extendedConfig = this.mergeConfig({ extends: flags.extends })
+      finalConfig = { ...finalConfig, ...extendedConfig }
+    } else if (args.config) {
       const argsConfig = await this.loadFromFile(args.config)
-      if (argsConfig) finalConfig = { ...finalConfig, ...argsConfig }
+      if (argsConfig) {
+        const extendedConfig = this.mergeConfig(argsConfig)
+        finalConfig = { ...finalConfig, ...extendedConfig }
+      }
+    } else if (this.fileConfig) {
+      const extendedConfig = this.mergeConfig(this.fileConfig)
+      finalConfig = { ...finalConfig, ...extendedConfig }
     }
     // STEP 3: Load flags
     if (flags.typescript) finalConfig.typescript = true
     if (flags.rem) finalConfig.rem = true
-    if (flags.extends) {
-      const presetConfig = loadPreset(flags.extends)
-      finalConfig = { ...finalConfig, ...presetConfig }
-    }
-    if (Object.keys(finalConfig).length === 0) {
-      throw new Error('Theme config is not provided')
-    }
+
     // Call generator
-    generate(finalConfig)
+    generate({ ...finalConfig, name: camelCase(finalConfig.name) })
   }
 }
 
