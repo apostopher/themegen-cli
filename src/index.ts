@@ -1,6 +1,7 @@
 import { flags } from '@oclif/command'
 
 import { Base } from './base'
+import { generate } from './generators'
 import { presets } from './presets'
 import { Config } from './types'
 
@@ -13,9 +14,7 @@ class ThemegenCli extends Base {
     typescript: flags.boolean({
       char: 't',
       description: 'Scaffold a typescript file.',
-    }),
-    rem: flags.boolean({
-      description: 'use rem based scale',
+      default: false,
     }),
     extends: flags.string({
       description: 'preset name to extend from',
@@ -38,7 +37,6 @@ class ThemegenCli extends Base {
     }
     // STEP 3: Load flags
     if (flags.typescript) finalConfig.typescript = flags.typescript
-    if (flags.rem) finalConfig.rem = flags.rem
     if (flags.extends) {
       const hasConfig = Object.prototype.hasOwnProperty.call(presets, flags.extends)
       if (hasConfig) {
@@ -46,6 +44,8 @@ class ThemegenCli extends Base {
         finalConfig = { ...finalConfig, ...presetConfig }
       }
     }
+    // Call generator
+    generate(finalConfig)
   }
 }
 

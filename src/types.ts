@@ -16,7 +16,6 @@ export interface Scale {
 export interface Options {
   extends?: string
   typescript?: boolean
-  rem?: boolean
 }
 
 export interface Config extends Options {

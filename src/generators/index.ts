@@ -1,12 +1,12 @@
 import * as fs from 'fs'
 
-import { Config, Options } from '../types'
+import { Config } from '../types'
 
 import { generateColorThemes } from './colors'
-import { generateFontSizeThemes } from './fontSizes'
+import { generateFontSizeThemes } from './font-sizes'
 import { generateSpaceThemes } from './spaces'
 
-export function generate({ colors, spaces, fontSizes }: Config, { typescript }: Options) {
+export function generate({ colors, spaces, fontSizes, typescript }: Config) {
   const colorThemes = colors ? generateColorThemes(colors) : null
   const spaceThemes = spaces ? generateSpaceThemes(spaces) : null
   const fsThemes = fontSizes ? generateFontSizeThemes(fontSizes) : null
