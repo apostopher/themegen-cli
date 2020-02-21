@@ -95,7 +95,9 @@ export function generate({
   }
 
   const themeName = name === '' ? 'theme' : `${name}Theme`
-  let themeBlock = `export const ${themeName} = {${themeBlocks.join(', ')}}${typescript ? ' as const' : ''}`
+  let themeBlock = `export const ${themeName} = { name: '${name || 'theme'}', ${themeBlocks.join(', ')}}${
+    typescript ? ' as const' : ''
+  }`
   if (typescript) themeBlock += `\nexport type ${upperFirst(themeName)} = typeof ${themeName}`
   codeBlocks.push(themeBlock)
 

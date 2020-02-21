@@ -139,4 +139,4 @@ export const themeSizes = {
   },
 }
 
-export const theme = { ...flexbox, ...themeSizes }
+export const theme = { name: 'theme', ...flexbox, ...themeSizes }
