@@ -19,7 +19,7 @@ $ npm install -g themegen-cli
 $ themegen COMMAND
 running command...
 $ themegen (-v|--version|version)
-themegen-cli/0.1.4 darwin-x64 node-v10.17.0
+themegen-cli/0.1.5 darwin-x64 node-v10.17.0
 $ themegen --help [COMMAND]
 USAGE
   $ themegen COMMAND
