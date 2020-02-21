@@ -9,7 +9,7 @@ export const scalePresets = scales as ScalePreset
 export const presets: Presets = {
   default: {
     name: 'default',
-    colors: colors.figmaColors,
+    colors: colors.figma,
     spaces: { base: 16, scale: scales.majorThird },
     fontSizes: { base: 16, scale: scales.majorThird },
     typescript: true,
@@ -17,7 +17,7 @@ export const presets: Presets = {
   },
   test: {
     name: 'test',
-    colors: colors.testColors,
+    colors: colors.test,
     spaces: { base: 16, scale: scales.test },
     fontSizes: { base: 16, scale: scales.test },
     typescript: true,

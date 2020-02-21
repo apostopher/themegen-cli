@@ -1,4 +1,4 @@
-export const figmaColors = {
+export const figma = {
   gray1: '#333333',
   gray2: '#4F4F4F',
   gray3: '#828282',
@@ -18,6 +18,6 @@ export const figmaColors = {
   purple2: '#BB6BD9',
 }
 
-export const testColors = {
+export const test = {
   primary: '#2F80ED',
 }
