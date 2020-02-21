@@ -23,7 +23,7 @@ function generateSpace(value: number | string, index: number) {
 }
 
 export function generateSpacesTheme(scale: Scale, options: GeneratorOptions) {
-  const { values, base } = scale
+  const { scale: values, base } = scale
   const { rem = false } = options
   let scaleStyles: any = {}
   if (rem) {

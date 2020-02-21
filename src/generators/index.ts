@@ -1,14 +1,34 @@
 import * as fs from 'fs'
 
+import has from 'lodash/has'
+import isString from 'lodash/isString'
 import upperFirst from 'lodash/upperFirst'
 
-import { ThemeConfig } from '../types'
+import { colorPresets, scalePresets } from '../presets'
+import { ThemeConfig, Scale, ScaleConfig, KeyValue } from '../types'
 
 import { generateColorsTheme } from './colors'
 import { generateFlexboxStyles } from './flexbox'
 import { generateFontSizesTheme } from './font-sizes'
 import { generateSizesTheme } from './sizes'
 import { generateSpacesTheme } from './spaces'
+
+function resolveScale(scale: ScaleConfig | undefined): Scale | undefined {
+  if (!scale) return
+  if (isString(scale.scale)) {
+    const name = scale.scale
+    return has(scalePresets, name) ? { ...scale, scale: scalePresets[name] } : undefined
+  }
+  return scale as Scale
+}
+
+function resolveColors(colors: KeyValue | string | undefined): KeyValue | undefined {
+  if (!colors) return
+  if (isString(colors)) {
+    return has(colorPresets, colors) ? colorPresets[colors] : undefined
+  }
+  return colors
+}
 
 // eslint-disable-next-line complexity
 export function generate({
@@ -21,10 +41,14 @@ export function generate({
   rem = false,
 }: ThemeConfig) {
   const flexboxStyles = generateFlexboxStyles()
-  const colorTheme = colors ? generateColorsTheme(colors) : null
-  const spaceTheme = spaces ? generateSpacesTheme(spaces, { rem }) : null
-  const fsTheme = fontSizes ? generateFontSizesTheme(fontSizes, { rem }) : null
-  const sizeTheme = generateSizesTheme(sizes, { rem })
+  const colorsConfig = resolveColors(colors)
+  const spacesConfig = resolveScale(spaces)
+  const fontSizesConfig = resolveScale(fontSizes)
+  const sizesConfig = resolveScale(sizes)
+  const colorTheme = colorsConfig ? generateColorsTheme(colorsConfig) : null
+  const spaceTheme = spacesConfig ? generateSpacesTheme(spacesConfig, { rem }) : null
+  const fsTheme = fontSizesConfig ? generateFontSizesTheme(fontSizesConfig, { rem }) : null
+  const sizeTheme = generateSizesTheme(sizesConfig, { rem })
 
   const codeBlocks: string[] = []
   const themeBlocks: string[] = []

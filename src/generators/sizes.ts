@@ -42,9 +42,9 @@ function generateHeightSize(value: number | string, index: number) {
   }
 }
 
-const defaultScale = { base: 16, values: [0, 1, 2, 4, 8, 16] }
+const defaultScale = { base: 16, scale: [0, 1, 2, 4, 8, 16] }
 export function generateSizesTheme(scale: Scale = defaultScale, options: GeneratorOptions) {
-  const { values } = scale
+  const { scale: values } = scale
   const { rem = false } = options
   let scaleStyles: any = []
   if (rem) {

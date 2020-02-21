@@ -8,7 +8,7 @@ function generateFontSize(value: number | string, index: number) {
 }
 
 export function generateFontSizesTheme(scale: Scale, options: GeneratorOptions) {
-  const { values, base } = scale
+  const { scale: values, base } = scale
   const { rem = false } = options
   let scaleStyles: any = {}
   if (rem) {
