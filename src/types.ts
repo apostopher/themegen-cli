@@ -4,7 +4,12 @@ export type KeyValue = {
 
 export interface Scale {
   base: number
-  values: number[]
+  scale: number[]
+}
+
+export interface ScaleConfig {
+  base: number
+  scale: number[] | string
 }
 
 export interface GeneratorOptions {
@@ -17,10 +22,18 @@ export interface Options extends GeneratorOptions {
 
 export interface ThemeConfig extends Options {
   name?: string
-  colors?: KeyValue
-  spaces?: Scale
-  fontSizes?: Scale
-  sizes?: Scale
+  colors?: KeyValue | string
+  spaces?: ScaleConfig
+  fontSizes?: ScaleConfig
+  sizes?: ScaleConfig
+}
+
+export interface ColorPreset {
+  [key: string]: KeyValue
+}
+
+export interface ScalePreset {
+  [key: string]: number[]
 }
 
 export interface Presets {
