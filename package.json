@@ -1,7 +1,7 @@
 {
   "name": "themegen-cli",
   "description": "styles-in-js theme generator for the web & react-native",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Rahul Devaskar @apostopher",
   "bin": {
     "themegen": "./bin/run"
